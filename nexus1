@@ -1,0 +1,17 @@
+#!/bin/bash
+
+yum install java-17-amazon-corretto -y
+mkdir app
+cd app  
+wget -O nexus.tar.gz https://download.sonatype.com/nexus/3/latest-unix.tar.gz
+tar -zxvf nexus.tar.gz  
+mv nexus-* nexus
+useradd nexus           
+chown -R nexus:nexus *
+sudo tee  /app/nexus/bin/nexus.rc <<EOL
+run_as_user="nexus"
+EOL
+#OR
+#echo run_as_user="nexus" | sudo tee /app/nexus/bin/nexus.rc
+./nexus/bin/nexus start
+./nexus/bin/nexus status               
